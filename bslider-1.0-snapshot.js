@@ -24,6 +24,8 @@
 
         var __reference;
 
+        Slider.prototype.className = 'easy-slider';
+
         function Slider() {
             __reference = this; //TODO find a better way
 
@@ -40,10 +42,7 @@
 
         Slider.prototype.initialize = function () {
             this.views = this.views || [];
-
             this.currentIndex = -1;
-
-            return this;
         };
 
         Slider.prototype.addView = function(viewsToAdd) {
@@ -55,8 +54,6 @@
             _.each(viewsToAdd, function (view) {
                 self.views.push(view);
             });
-
-            return this;
         };
 
         Slider.prototype.delegateEvents = function () {
@@ -65,15 +62,11 @@
         };
 
         Slider.prototype.render = function (options) {
-            var parentData;
-
             if (options === null) {
                 options = {};
             }
 
-            parentData = this.getData();
-
-            this.sliderContainer = $('<div></div>').addClass('easy-slider');
+            this.sliderContainer = $('<div></div>').addClass('easy-slider-container');
             this.navLeft = $('<div />').addClass('easy-slider-nav-left');
             this.navRight = $('<div />').addClass('easy-slider-nav-right');
 
@@ -92,7 +85,6 @@
             } else {
                 this.renderFirstView();
             }
-
 
             return this;
         };
@@ -137,23 +129,6 @@
             }
 
             this.sliderContainer.append(this.getViewAt(0).el);
-
-            return this;
-        };
-
-        Slider.prototype.getData = function() {
-            var data = {};
-            if (this.model) {
-                data = _.extend(data, this.model.toJSON());
-            }
-
-            if (this.collection) {
-                data = _.extend(data, {
-                    items: this.collection.toJSON()
-                });
-            }
-
-            return data;
         };
 
         return Slider;
