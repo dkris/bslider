@@ -1,6 +1,19 @@
 (function () {
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { 
+        for (var key in parent) { 
+            if (__hasProp.call(parent, key)) 
+                child[key] = parent[key]; 
+        } 
+        function ctor() { 
+            this.constructor = child; 
+        } 
+        ctor.prototype = parent.prototype; 
+        child.prototype = new ctor(); 
+        child.__super__ = parent.prototype; 
+        return child; 
+    },
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
     if (typeof Backbone === "undefined" || Backbone === null) {
         throw new Error('Backbone is not defined. Please include the latest version from http://documentcloud.github.com/backbone/backbone.js');
@@ -74,13 +87,22 @@
             this.$el.prepend(this.navLeft);
             this.$el.append(this.navRight);
 
-            this.renderFirstView();
+            if (this.initialViewToBeRendered) {
+                this.renderViewAt(this.initialViewToBeRendered);
+            } else {
+                this.renderFirstView();
+            }
+
 
             return this;
         };
 
         Slider.prototype.navigateLeft = function () {
-            console.log('Navigate Left');
+            thisSlider.sliderContainer.empty();
+            var viewToRender = thisSlider.getViewAt(--thisSlider.currentIndex);
+            if (typeof viewToRender !== 'undefined') {
+                thisSlider.sliderContainer.append(viewToRender.el);
+            }
         };
 
         Slider.prototype.navigateRight = function () {
@@ -88,6 +110,13 @@
             var viewToRender = thisSlider.getViewAt(++thisSlider.currentIndex);
             if (typeof viewToRender !== 'undefined') {
                 thisSlider.sliderContainer.append(viewToRender.el);
+            }
+        };
+
+        Slider.prototype.renderViewAt = function (index) {
+            var viewToBeRendered = this.getViewAt(index);
+            if (viewToBeRendered) {
+                this.sliderContainer.append(viewToBeRendered.el);
             }
         };
 
