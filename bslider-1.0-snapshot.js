@@ -1,6 +1,6 @@
 (function () {
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { 
+    __extend_parent__ = function(child, parent) { 
         for (var key in parent) { 
             if (__hasProp.call(parent, key)) 
                 child[key] = parent[key]; 
@@ -16,16 +16,16 @@
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
     if (typeof Backbone === "undefined" || Backbone === null) {
-        throw new Error('Backbone is not defined. Please include the latest version from http://documentcloud.github.com/backbone/backbone.js');
+        throw new Error('Need the latest version of Backbone. Can be found at http://documentcloud.github.com/backbone/backbone.js');
     }
 
     Backbone.Slider = (function(_super) {
-        __extends(Slider, _super);
+        __extend_parent__(Slider, _super);
 
-        var thisSlider;
+        var __reference;
 
         function Slider() {
-            thisSlider = this; //TODO find a better way
+            __reference = this; //TODO find a better way
 
             this.args = Array.prototype.slice.apply(arguments);
             Backbone.View.prototype.constructor.apply(this, this.args);
@@ -39,7 +39,7 @@
         };
 
         Slider.prototype.initialize = function () {
-            this.views = [];
+            this.views = this.views || [];
 
             this.currentIndex = -1;
 
@@ -98,18 +98,18 @@
         };
 
         Slider.prototype.navigateLeft = function () {
-            thisSlider.sliderContainer.empty();
-            var viewToRender = thisSlider.getViewAt(--thisSlider.currentIndex);
+            var viewToRender = __reference.getViewAt(--__reference.currentIndex);
             if (typeof viewToRender !== 'undefined') {
-                thisSlider.sliderContainer.append(viewToRender.el);
+                __reference.sliderContainer.empty();
+                __reference.sliderContainer.append(viewToRender.el);
             }
         };
 
         Slider.prototype.navigateRight = function () {
-            thisSlider.sliderContainer.empty();
-            var viewToRender = thisSlider.getViewAt(++thisSlider.currentIndex);
+            var viewToRender = __reference.getViewAt(++__reference.currentIndex);
             if (typeof viewToRender !== 'undefined') {
-                thisSlider.sliderContainer.append(viewToRender.el);
+                __reference.sliderContainer.empty();
+                __reference.sliderContainer.append(viewToRender.el);
             }
         };
 
@@ -121,7 +121,7 @@
         };
 
         Slider.prototype.getViewAt = function(index) {
-            if (!this.views.length || index > this.views.length) {
+            if (!this.views.length || index > this.views.length || index < 0) {
                 return undefined;
             }
 

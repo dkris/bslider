@@ -19,6 +19,17 @@ test('when two backbone views are given to the slider, and the slider is rendere
         equal(slider.$('#two').length, 0, 'The second view should not be visible');
 });
 
+test('views can also be initialized as an extended property', function () {
+    var viewOne = new Backbone.View({className: 'test-view', id: 'one'}),
+        MySlider = Backbone.Slider.extend({
+            views : [viewOne]
+        }),
+        slider = new MySlider();
+
+        slider.render();
+        equal(slider.$('#one').length, 1);
+});
+
 test('initial view to be rendered can be an option', function () {
     var viewOne = new Backbone.View({className: 'test-view', id: 'one'}),
         viewTwo = new Backbone.View({className: 'test-view', id: 'two'}),
@@ -68,5 +79,22 @@ test('clicking the left arrow on the slider slides the view on the left in', fun
 
         equal(slider.$('#two').length, 0, 'The second view should be visible');
         equal(slider.$('#one').length, 1, 'The first view should be visible');
+});
+
+test('when there are no other views on the left or right, the navs do not change the existing view', function () {
+    var viewOne = new Backbone.View({className: 'test-view', id: 'one'}),
+        MySlider = Backbone.Slider.extend({}),
+        slider = new MySlider();
+
+        slider.addView([viewOne]);
+        slider.render();
+
+        equal(slider.$('#one').length, 1);
+        
+        slider.$('.easy-slider-nav-left').trigger('click');
+        equal(slider.$('#one').length, 1);
+
+        slider.$('.easy-slider-nav-left').trigger('click');
+        equal(slider.$('#one').length, 1);
 });
 
