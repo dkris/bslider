@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='UTF-8' />
+        <meta http-equiv='content-type' content='text/html; charset=utf-8' />
+        <link rel="stylesheet" href="../css/backslider.css" type="text/css" />
+        <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.css" type="text/css" />
+
+        <title>Easy Slider</title>
+
+        <script src='../lib/jquery-1.10.2.js'></script>
+        <script src='../lib/underscore-1.5.1.js'></script>
+        <script src='../lib/backbone-1.0.0.js'></script>
+        <script src='../bslider-1.0-snapshot.js'></script>
+    </head>
+    <body>
+        <script type="text/template" id="test-template-one">
+            <div class="title">First View</div>
+        </script>
+        <script type="text/template" id="test-template-two">
+            <div class="title">Second View</div>
+        </script>
+        <script>
+            jQuery(function ($) {
+                var TestView = Backbone.View.extend({
+                        className: 'test-view',
+                        initialize: function (options) {
+                            this.template = _.template(options.template.html());
+                            this.render();
+                        },
+                        render: function () {
+                            this.$el.html(this.template());
+                            return this;
+                        }
+                    }),
+                    viewOne = new TestView({template: $('#test-template-one')}),
+                    viewTwo = new TestView({template: $('#test-template-two')}),
+                    MySlider = Backbone.Slider.extend({
+                        views: [viewOne, viewTwo]
+                    });
+                var slider = new MySlider();
+                $('.slider-demo').append(slider.render().el);
+            });
+        </script>
+        <div class="slider-demo"></div>
+    </body>
+</html>
