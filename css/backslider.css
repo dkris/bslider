@@ -1,0 +1,37 @@
+.easy-slider .easy-slider-nav-left a, .easy-slider .easy-slider-nav-right a {
+    background: #000;
+    color: #fff;
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.easy-slider .easy-slider-nav-right, .easy-slider .easy-slider-nav-left {
+    cursor: pointer;
+    font-size: 40px;
+    text-align: center;
+}
+
+.easy-slider .easy-slider-nav-right:hover, .easy-slider .easy-slider-nav-left:hover {
+    opacity: 0.65;
+}
+
+.easy-slider-nav-container-left, .easy-slider-nav-container-right, .easy-slider-container {
+    display: inline-block;
+}
+
+.easy-slider-container {
+    padding: 1em;
+    vertical-align: middle;
+}
+
+
+
+
+
+/* Demo css */
+.test-view {
+    width: 500px;
+    height: 400px;
+    border: 1px solid #ccc;
+}

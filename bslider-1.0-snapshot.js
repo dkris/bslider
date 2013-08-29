@@ -1,19 +1,19 @@
 (function () {
-    __hasProp = {}.hasOwnProperty,
     __extend_parent__ = function(child, parent) { 
-        for (var key in parent) { 
-            if (__hasProp.call(parent, key)) 
-                child[key] = parent[key]; 
-        } 
-        function ctor() { 
+        _.each(_.keys(parent), function (key) {
+            if (_.has(parent, key)) {
+                child[key] = parent[key];
+            }
+        });
+
+        function konstructor() { 
             this.constructor = child; 
         } 
-        ctor.prototype = parent.prototype; 
-        child.prototype = new ctor(); 
+        konstructor.prototype = parent.prototype; 
+        child.prototype = new konstructor(); 
         child.__super__ = parent.prototype; 
         return child; 
-    },
-    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+    };
 
     if (typeof Backbone === "undefined" || Backbone === null) {
         throw new Error('Need the latest version of Backbone. Can be found at http://documentcloud.github.com/backbone/backbone.js');
