@@ -62,13 +62,16 @@
         };
 
         Slider.prototype.render = function (options) {
+            var navContainerLeft = $('<div />').addClass('easy-slider-nav-container-left');
+                navContainerRight = $('<div />').addClass('easy-slider-nav-container-right');
+
             if (options === null) {
                 options = {};
             }
 
             this.sliderContainer = $('<div></div>').addClass('easy-slider-container');
-            this.navLeft = $('<div />').addClass('easy-slider-nav-left');
-            this.navRight = $('<div />').addClass('easy-slider-nav-right');
+            this.navLeft = $('<i />').addClass('easy-slider-nav-left').addClass('icon-circle-arrow-left');
+            this.navRight = $('<i />').addClass('easy-slider-nav-right').addClass('icon-circle-arrow-right');
 
             if (this.template) {
                 this.sliderContainer.html(this.template());
@@ -77,8 +80,8 @@
             this.$el.html(this.sliderContainer);
 
             //TODO not the best way to do this. Find a better way
-            this.$el.prepend(this.navLeft);
-            this.$el.append(this.navRight);
+            this.$el.prepend(navContainerLeft.append(this.navLeft));
+            this.$el.append(navContainerRight.append(this.navRight));
 
             if (this.initialViewToBeRendered) {
                 this.renderViewAt(this.initialViewToBeRendered);
@@ -114,6 +117,11 @@
 
         Slider.prototype.getViewAt = function(index) {
             if (!this.views.length || index > this.views.length || index < 0) {
+                if (index > this.views.length) {
+                    --__reference.currentIndex;
+                } else if (index < 0){
+                    ++__reference.currentIndex;
+                }
                 return undefined;
             }
 
