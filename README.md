@@ -1,2 +1,2 @@
-easyslider
+backslider
 ==========
