@@ -1,4 +1,4 @@
-module('Base test setup');
+module('BSlider Test');
 
 test('create a slider', function() {
     var slider = Backbone.Slider.extend();
