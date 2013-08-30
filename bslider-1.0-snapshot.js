@@ -16,7 +16,15 @@
     };
 
     if (typeof Backbone === "undefined" || Backbone === null) {
-        throw new Error('Need the latest version of Backbone. Can be found at http://documentcloud.github.com/backbone/backbone.js');
+        throw new Error('This plugin requires the latest version of Backbone. Can be found at http://documentcloud.github.com/backbone/backbone.js');
+    }
+
+    if (typeof jQuery === "undefined") {
+        throw new Error('This plugin requires jQuery version 1.10.2 and above. Can be found at http://jquery.com');
+    }
+    
+    if (typeof $.ui === "undefined") {
+        throw new Error('This plugin requires jQuery-ui version 1.10.3. Can be found at http://jqueryui.com');
     }
 
     Backbone.Slider = (function(_super) {
