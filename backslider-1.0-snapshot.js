@@ -43,6 +43,7 @@
         Slider.prototype.initialize = function () {
             this.views = this.views || [];
             this.currentIndex = -1;
+            this.currentView = -1;
         };
 
         Slider.prototype.addView = function(viewsToAdd) {
@@ -95,32 +96,49 @@
         Slider.prototype.navigateLeft = function () {
             var viewToRender = __reference.getViewAt(--__reference.currentIndex);
             if (typeof viewToRender !== 'undefined') {
-                __reference.sliderContainer.empty();
-                __reference.sliderContainer.append(viewToRender.el);
+                var viewToRemove = __reference.getCurrentView();
+                $(viewToRender.$el).css('display', 'none');
+                $(viewToRender.$el).insertAfter($(viewToRemove.$el));
+                $(viewToRemove.$el).remove();
+                $(viewToRender.$el).show('slide', {direction: 'left'}, 500, function () {
+                    __reference.currentView = __reference.currentIndex;
+                });
             }
         };
 
         Slider.prototype.navigateRight = function () {
             var viewToRender = __reference.getViewAt(++__reference.currentIndex);
             if (typeof viewToRender !== 'undefined') {
-                __reference.sliderContainer.empty();
-                __reference.sliderContainer.append(viewToRender.el);
+                var viewToRemove = __reference.getCurrentView();
+                $(viewToRender.$el).css('display', 'none');
+                $(viewToRender.$el).insertAfter($(viewToRemove.$el));
+                $(viewToRemove.$el).remove();
+                $(viewToRender.$el).show('slide', {direction: 'right'}, 500, function () {
+                    __reference.currentView = __reference.currentIndex;
+                });
             }
         };
 
         Slider.prototype.renderViewAt = function (index) {
             var viewToBeRendered = this.getViewAt(index);
             if (viewToBeRendered) {
+                this.currentView = index;
                 this.sliderContainer.append(viewToBeRendered.el);
             }
         };
 
+        Slider.prototype.getCurrentView = function () {
+            return this.views[__reference.currentView];
+        };
+
         Slider.prototype.getViewAt = function(index) {
-            if (!this.views.length || index > this.views.length || index < 0) {
-                if (index > this.views.length) {
-                    --__reference.currentIndex;
+            if (!this.views.length || index >= this.views.length || index < 0) {
+                if (index >= this.views.length) {
+                    __reference.currentIndex = this.views.length - 1;
+                    __reference.currentView = __reference.currentIndex;
                 } else if (index < 0){
-                    ++__reference.currentIndex;
+                    __reference.currentIndex = 0;
+                    __reference.currentView = __reference.currentIndex;
                 }
                 return undefined;
             }
@@ -136,6 +154,7 @@
                 throw new Error('Cannot render the slider. Need at least one view');
             }
 
+            this.currentView = 0;
             this.sliderContainer.append(this.getViewAt(0).el);
         };
 
