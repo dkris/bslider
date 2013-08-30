@@ -36,12 +36,12 @@
 
 <p>A backbone based slider for backbone views. </p>
 
-<p><em>Note: This is a very crude version. Since the intent was to release early, a snapshot version has been released</em></p>
+<p><em>Note: This is a work in progress. It provides just the basic functionality. Please do not use in production</em></p>
 
 <h1>
 <a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h1>
 
-<p>Backbone.Slider (BSlider) is built on top of <a href="http://backbonejs.org">Backbone.js</a>. Make sure Backbone is setup in your application, and you have the CSS files for Backbone.Slider. Backbone.Slider uses <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>. Please be sure to include that. </p>
+<p>Backbone.Slider (BSlider) is built on top of <a href="http://backbonejs.org">Backbone.js</a>. Make sure Backbone is setup in your application, and you have the CSS files for Backbone.Slider. Backbone.Slider uses <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>, <a href="http://jqueryui.com">jQuery-ui</a>, and <a href="http://jquery.com">jQuery</a>. Please be sure to include those. </p>
 
 <h4>
 <a name="backboneslider" class="anchor" href="#backboneslider"><span class="octicon octicon-link"></span></a>Backbone.Slider</h4>
@@ -54,10 +54,25 @@ var instance = new MySlider().render();
 </code></pre>
 
 <h4>
-<a name="addview-instanceaddview" class="anchor" href="#addview-instanceaddview"><span class="octicon octicon-link"></span></a>addView <code>instance.addView</code>
+<a name="addview--instanceaddview" class="anchor" href="#addview--instanceaddview"><span class="octicon octicon-link"></span></a>addView  <code>instance.addView</code>
 </h4>
 
 <p>Add one more view, or an array of views to an instance of the slider.</p>
+
+<h4>
+<a name="initial-view-to-be-rendered" class="anchor" href="#initial-view-to-be-rendered"><span class="octicon octicon-link"></span></a>Initial View To Be Rendered</h4>
+
+<p>When the slider is rendered, if you require a specific view to be shown as the first slide, it can be specified as an option. </p>
+
+<p><em>Future versions will include selecting initial views by name, id, etc.</em></p>
+
+<pre><code>var MySlider = Backbone.Slider.extend({
+    initialViewToBeRendered: 1,
+    views: [myBackboneViewOne, myBackboneViewTwo] 
+}); //Index starts at 0
+
+var instance = new MySlider().render();
+</code></pre>
 
 <h3>
 <a name="more-features-coming-soon-stay-tuned" class="anchor" href="#more-features-coming-soon-stay-tuned"><span class="octicon octicon-link"></span></a>More features coming soon. Stay tuned!</h3>
