@@ -35,12 +35,12 @@
         Slider.prototype.className = 'easy-slider';
 
         function Slider() {
-            __reference = this; //TODO find a better way
+            __reference = this;
 
-            this.args = Array.prototype.slice.apply(arguments);
-            Backbone.View.prototype.constructor.apply(this, this.args);
-            Backbone.View.prototype.delegateEvents.apply(this, this.args);
-            this.initialize();
+            __reference.args = Array.prototype.slice.apply(arguments);
+            Backbone.View.prototype.constructor.apply(__reference, __reference.args);
+            Backbone.View.prototype.delegateEvents.apply(__reference, __reference.args);
+            __reference.initialize();
         }
 
         Slider.prototype.events = {
@@ -49,25 +49,31 @@
         };
 
         Slider.prototype.initialize = function () {
-            this.views = this.views || [];
-            this.currentIndex = -1;
-            this.currentView = -1;
+            __reference.views = __reference.views || [];
+            if (_.some(__reference.views, function (view) {
+                return !(view instanceof Backbone.View);
+            })) {
+                throw new Error('Cannot initialize slider. Nothing other than backbone views are supported for now');
+            }
+            __reference.currentIndex = -1;
+            __reference.currentView = -1;
         };
 
         Slider.prototype.addView = function(viewsToAdd) {
-            var self = this;
-
             if (!_.isArray(viewsToAdd) || viewsToAdd === null || viewsToAdd === 'undefined') {
                 throw new Error('Error adding views ' + views);
             }
             _.each(viewsToAdd, function (view) {
-                self.views.push(view);
+                if (!(view instanceof Backbone.View)) {
+                    throw new Error('One of the added views is not a backbone view');
+                }
+                __reference.views.push(view);
             });
         };
 
         Slider.prototype.delegateEvents = function () {
-            this.$('.easy-slider-nav-left').on('click', this.navigateLeft);
-            this.$('.easy-slider-nav-right').on('click', this.navigateRight);
+            __reference.$('.easy-slider-nav-left').on('click', __reference.navigateLeft);
+            __reference.$('.easy-slider-nav-right').on('click', __reference.navigateRight);
         };
 
         Slider.prototype.render = function (options) {
@@ -78,27 +84,23 @@
                 options = {};
             }
 
-            this.sliderContainer = $('<div></div>').addClass('easy-slider-container');
-            this.navLeft = $('<i />').addClass('easy-slider-nav-left').addClass('icon-circle-arrow-left');
-            this.navRight = $('<i />').addClass('easy-slider-nav-right').addClass('icon-circle-arrow-right');
+            __reference.sliderContainer = $('<div></div>').addClass('easy-slider-container');
+            __reference.navLeft = $('<i />').addClass('easy-slider-nav-left').addClass('icon-circle-arrow-left');
+            __reference.navRight = $('<i />').addClass('easy-slider-nav-right').addClass('icon-circle-arrow-right');
 
-            if (this.template) {
-                this.sliderContainer.html(this.template());
-            }
-
-            this.$el.html(this.sliderContainer);
+            __reference.$el.html(__reference.sliderContainer);
 
             //TODO not the best way to do this. Find a better way
-            this.$el.prepend(navContainerLeft.append(this.navLeft));
-            this.$el.append(navContainerRight.append(this.navRight));
+            __reference.$el.prepend(navContainerLeft.append(__reference.navLeft));
+            __reference.$el.append(navContainerRight.append(__reference.navRight));
 
-            if (this.initialViewToBeRendered) {
-                this.renderViewAt(this.initialViewToBeRendered);
+            if (__reference.initialViewToBeRendered) {
+                __reference.renderViewAt(__reference.initialViewToBeRendered);
             } else {
-                this.renderFirstView();
+                __reference.renderFirstView();
             }
 
-            return this;
+            return __reference;
         };
 
         Slider.prototype.navigateLeft = function () {
@@ -128,21 +130,21 @@
         };
 
         Slider.prototype.renderViewAt = function (index) {
-            var viewToBeRendered = this.getViewAt(index);
+            var viewToBeRendered = __reference.getViewAt(index);
             if (viewToBeRendered) {
-                this.currentView = index;
-                this.sliderContainer.append(viewToBeRendered.el);
+                __reference.currentView = index;
+                __reference.sliderContainer.append(viewToBeRendered.el);
             }
         };
 
         Slider.prototype.getCurrentView = function () {
-            return this.views[__reference.currentView];
+            return __reference.views[__reference.currentView];
         };
 
         Slider.prototype.getViewAt = function(index) {
-            if (!this.views.length || index >= this.views.length || index < 0) {
-                if (index >= this.views.length) {
-                    __reference.currentIndex = this.views.length - 1;
+            if (!__reference.views.length || index >= __reference.views.length || index < 0) {
+                if (index >= __reference.views.length) {
+                    __reference.currentIndex = __reference.views.length - 1;
                     __reference.currentView = __reference.currentIndex;
                 } else if (index < 0){
                     __reference.currentIndex = 0;
@@ -151,19 +153,17 @@
                 return undefined;
             }
 
-            this.currentIndex = index;
-            return this.views[index];
+            __reference.currentIndex = index;
+            return __reference.views[index];
         };
 
         Slider.prototype.renderFirstView = function renderFirstView() {
-            var self = this;
-
-            if (!this.views.length) {
+            if (!__reference.views.length) {
                 throw new Error('Cannot render the slider. Need at least one view');
             }
 
-            this.currentView = 0;
-            this.sliderContainer.append(this.getViewAt(0).el);
+            __reference.currentView = 0;
+            __reference.sliderContainer.append(__reference.getViewAt(0).el);
         };
 
         return Slider;

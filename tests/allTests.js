@@ -6,6 +6,24 @@ test('create a slider', function() {
     ok(slider, 'a slider should be created');
 });
 
+test('slides cannot be anything other than backbone views', function () {
+    var viewOne = new Backbone.View({className: 'test-view', id: 'one'}),
+        viewTwo = {},
+        MySlider = Backbone.Slider.extend({
+            views : [viewOne, viewTwo]
+        }),
+        MyOtherSlider = Backbone.Slider.extend({});
+
+        throws(function () {
+            new MySlider();
+        }, 'This should raise an exception since viewTwo is not a backbone view');
+
+        throws(function () {
+           var slider = new MyOtherSlider();
+           slider.addView([viewOne, viewTwo]);
+        }, 'This should also raise an exception since viewTwo is not a backbone view');
+});
+
 test('when two backbone views are given to the slider, and the slider is rendered, the first view should be shown', function () {
     var viewOne = new Backbone.View({className: 'test-view', id: 'one'}),
         viewTwo = new Backbone.View({className: 'test-view', id: 'two'}),
