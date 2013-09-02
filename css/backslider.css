@@ -1,4 +1,4 @@
-.easy-slider .easy-slider-nav-left a, .easy-slider .easy-slider-nav-right a {
+.bslider .bslider-nav-left a, .bslider .bslider-nav-right a {
     background: #000;
     color: #fff;
     padding: 5px;
@@ -6,21 +6,21 @@
     text-decoration: none;
 }
 
-.easy-slider .easy-slider-nav-right, .easy-slider .easy-slider-nav-left {
+.bslider .bslider-nav-right, .bslider .bslider-nav-left {
     cursor: pointer;
     font-size: 40px;
     text-align: center;
 }
 
-.easy-slider .easy-slider-nav-right:hover, .easy-slider .easy-slider-nav-left:hover {
+.bslider .bslider-nav-right:hover, .bslider .bslider-nav-left:hover {
     opacity: 0.65;
 }
 
-.easy-slider-nav-container-left, .easy-slider-nav-container-right, .easy-slider-container {
+.bslider-nav-container-left, .bslider-nav-container-right, .bslider-container {
     display: inline-block;
 }
 
-.easy-slider-container {
+.bslider-container {
     padding: 1em;
     vertical-align: middle;
 }

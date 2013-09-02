@@ -32,7 +32,7 @@
 
         var __reference;
 
-        Slider.prototype.className = 'easy-slider';
+        Slider.prototype.className = 'bslider';
 
         function Slider() {
             __reference = this;
@@ -44,8 +44,8 @@
         }
 
         Slider.prototype.events = {
-            'click .easy-slider-nav-left' : 'navigateLeft',
-            'click .easy-slider-nav-right' : 'navigateRight'
+            'click .bslider-nav-left' : 'navigateLeft',
+            'click .bslider-nav-right' : 'navigateRight'
         };
 
         Slider.prototype.initialize = function () {
@@ -72,21 +72,21 @@
         };
 
         Slider.prototype.delegateEvents = function () {
-            __reference.$('.easy-slider-nav-left').on('click', __reference.navigateLeft);
-            __reference.$('.easy-slider-nav-right').on('click', __reference.navigateRight);
+            __reference.$('.bslider-nav-left').on('click', __reference.navigateLeft);
+            __reference.$('.bslider-nav-right').on('click', __reference.navigateRight);
         };
 
         Slider.prototype.render = function (options) {
-            var navContainerLeft = $('<div />').addClass('easy-slider-nav-container-left');
-                navContainerRight = $('<div />').addClass('easy-slider-nav-container-right');
+            var navContainerLeft = $('<div />').addClass('bslider-nav-container-left');
+                navContainerRight = $('<div />').addClass('bslider-nav-container-right');
 
             if (options === null) {
                 options = {};
             }
 
-            __reference.sliderContainer = $('<div></div>').addClass('easy-slider-container');
-            __reference.navLeft = $('<i />').addClass('easy-slider-nav-left').addClass('icon-circle-arrow-left');
-            __reference.navRight = $('<i />').addClass('easy-slider-nav-right').addClass('icon-circle-arrow-right');
+            __reference.sliderContainer = $('<div></div>').addClass('bslider-container');
+            __reference.navLeft = $('<i />').addClass('bslider-nav-left').addClass('icon-circle-arrow-left');
+            __reference.navRight = $('<i />').addClass('bslider-nav-right').addClass('icon-circle-arrow-right');
 
             __reference.$el.html(__reference.sliderContainer);
 
@@ -100,7 +100,56 @@
                 __reference.renderFirstView();
             }
 
+            if (__reference.enableCrossLinks) {
+                __reference.createCrossLinks();
+            }
+
             return __reference;
+        };
+
+        Slider.prototype.createCrossLinks = function () {
+            var crossLinkCount = 0;
+            __reference.crossLinksContainer = $('<div />').addClass('cross-links');
+            __reference.$el.append(__reference.crossLinksContainer),
+            __reference.viewCrossLinkMap = {};
+            _.each(__reference.views, function (view) {
+                var crossLinkId = 'bsliderCrossLink' + crossLinkCount++,
+                    crossLink = $('<div />').addClass('cross-link').attr('id', crossLinkId);
+                __reference.crossLinksContainer.append(crossLink);
+                _.extend(__reference.viewCrossLinkMap, _.object([crossLinkId], [view]));
+            });
+
+            __reference.$('.cross-link').on('click', __reference.navigateTo);
+
+        };
+        
+        Slider.prototype.navigateTo = function(e) {
+            var viewId = e.currentTarget.id,
+                viewToRender = _.result(__reference.viewCrossLinkMap, viewId);
+
+            if (typeof viewToRender !== 'undefined') {
+                var viewToRemove = __reference.getCurrentView();
+
+                //Animate like nav left
+                if (__reference.views.indexOf(viewToRender) < __reference.views.indexOf(viewToRemove)) {
+                    $(viewToRender.$el).css('display', 'none');
+                    $(viewToRender.$el).insertAfter($(viewToRemove.$el));
+                    $(viewToRemove.$el).remove();
+                    $(viewToRender.$el).show('slide', {direction: 'left'}, 500, function () {
+                        __reference.currentView = _.indexOf(__reference.views, viewToRender);
+                    });
+                }
+
+                //Animate like nav right
+                else if (__reference.views.indexOf(viewToRender) > __reference.views.indexOf(viewToRemove)) {
+                    $(viewToRender.$el).css('display', 'none');
+                    $(viewToRender.$el).insertAfter($(viewToRemove.$el));
+                    $(viewToRemove.$el).remove();
+                    $(viewToRender.$el).show('slide', {direction: 'right'}, 500, function () {
+                        __reference.currentView = _.indexOf(__reference.views, viewToRender);
+                    });
+                }
+            }
         };
 
         Slider.prototype.navigateLeft = function () {
