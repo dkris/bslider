@@ -170,3 +170,21 @@ test('clicking on a crosslink navigates to the right view', function () {
         ok(slider.$('#bsliderCrossLink1').hasClass('unselected'), 'First crosslink should be selected');
         ok(slider.$('#bsliderCrossLink0').hasClass('selected'), 'Second crossLink should not be selected');
 });
+
+test('crosslink titles can be specified as a parameter', function () {
+    var MyViewOne = Backbone.View.extend({bsliderCrossLinkTitle: 'View One'}),
+        viewOne = new MyViewOne(),
+        viewTwo = new Backbone.View({className: 'test-view', id: 'two'}),
+        MySlider = Backbone.Slider.extend({
+            enableCrossLinks: true,
+            views : [viewOne, viewTwo],
+        }),
+        slider = new MySlider();
+        
+        jQuery.fx.off = true;
+
+        slider.render();
+
+        equal(slider.$('#bsliderCrossLink0').text().trim(), 'View One');
+        equal(slider.$('#bsliderCrossLink1').text().trim(), 'View 2');
+});

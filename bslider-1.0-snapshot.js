@@ -50,6 +50,7 @@
 
         Slider.prototype.initialize = function () {
             __reference.views = __reference.views || [];
+            __reference.crossLinkTitles = __reference.crossLinkTitles || {};
             if (_.some(__reference.views, function (view) {
                 return !(view instanceof Backbone.View);
             })) {
@@ -116,7 +117,13 @@
             __reference.crossLinks = [];
             _.each(__reference.views, function (view) {
                 var crossLinkId = 'bsliderCrossLink' + crossLinkCount++,
-                    crossLink = $('<div />').addClass('cross-link').attr('id', crossLinkId).text('View ' + (crossLinkCount)).addClass('unselected');
+                    crossLink = $('<div />').addClass('cross-link').attr('id', crossLinkId).addClass('unselected');
+                
+                //TODO Right now, cross link title can only be part of the backbone view. 
+                //It should actually be a part of the slider in some sort of a map
+           
+                crossLink.text(view.bsliderCrossLinkTitle ? view.bsliderCrossLinkTitle : 'View ' + crossLinkCount);
+
                 __reference.crossLinksContainer.append(crossLink);
                 __reference.crossLinks.push(crossLink);
                 _.extend(__reference.viewCrossLinkMap, _.object([crossLinkId], [view]));
