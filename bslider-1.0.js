@@ -137,35 +137,33 @@
             var viewId = e.currentTarget.id,
                 viewToRender = _.result(__reference.viewCrossLinkMap, viewId);
 
+
             if (typeof viewToRender !== 'undefined') {
                 var viewToRemove = __reference.getCurrentView();
 
                 //Animate like nav left
                 if (__reference.views.indexOf(viewToRender) < __reference.views.indexOf(viewToRemove)) {
-                    $(viewToRender.$el).css('display', 'none');
-                    $(viewToRender.$el).insertAfter($(viewToRemove.$el));
-                    $(viewToRemove.$el).remove();
-                    $(viewToRender.$el).show('slide', {direction: 'left'}, 500, function () {
-                        __reference.currentView = _.indexOf(__reference.views, viewToRender);
-                        __reference.currentIndex = _.indexOf(__reference.views, __reference.getCurrentView());
-                        __reference.updateCrossLinks();
-                    });
+                    renderNewAndRemoveOld(viewToRender, viewToRemove, 'left');
                 }
 
                 //Animate like nav right
                 else if (__reference.views.indexOf(viewToRender) > __reference.views.indexOf(viewToRemove)) {
-                    $(viewToRender.$el).css('display', 'none');
-                    $(viewToRender.$el).insertAfter($(viewToRemove.$el));
-                    $(viewToRemove.$el).remove();
-                    $(viewToRender.$el).show('slide', {direction: 'right'}, 500, function () {
-                        __reference.currentView = _.indexOf(__reference.views, viewToRender);
-                        __reference.currentIndex = _.indexOf(__reference.views, __reference.getCurrentView());
-                        __reference.updateCrossLinks();
-                    });
+                    renderNewAndRemoveOld(viewToRender, viewToRemove, 'right');
                 }
 
             }
         };
+
+        function renderNewAndRemoveOld (newView, oldView, slideDirection) {
+            $(newView.$el).css('display', 'none');
+            $(newView.$el).insertAfter($(oldView.$el));
+            $(oldView.$el).remove();
+            __reference.currentView = _.indexOf(__reference.views, newView);
+            $(newView.$el).show('slide', {direction: slideDirection}, 300, function () {
+                __reference.currentIndex = _.indexOf(__reference.views, __reference.getCurrentView());
+                __reference.updateCrossLinks();
+            });
+        }
 
         Slider.prototype.updateCrossLinks = function () {
             if (__reference.enableCrossLinks) {
@@ -186,13 +184,7 @@
             var viewToRender = __reference.getViewAt(--__reference.currentIndex);
             if (typeof viewToRender !== 'undefined') {
                 var viewToRemove = __reference.getCurrentView();
-                $(viewToRender.$el).css('display', 'none');
-                $(viewToRender.$el).insertAfter($(viewToRemove.$el));
-                $(viewToRemove.$el).remove();
-                $(viewToRender.$el).show('slide', {direction: 'left'}, 500, function () {
-                    __reference.currentView = __reference.currentIndex;
-                    __reference.updateCrossLinks();
-                });
+                renderNewAndRemoveOld(viewToRender, viewToRemove, 'left');
             }
         };
 
@@ -200,13 +192,7 @@
             var viewToRender = __reference.getViewAt(++__reference.currentIndex);
             if (typeof viewToRender !== 'undefined') {
                 var viewToRemove = __reference.getCurrentView();
-                $(viewToRender.$el).css('display', 'none');
-                $(viewToRender.$el).insertAfter($(viewToRemove.$el));
-                $(viewToRemove.$el).remove();
-                $(viewToRender.$el).show('slide', {direction: 'right'}, 500, function () {
-                    __reference.currentView = __reference.currentIndex;
-                    __reference.updateCrossLinks();
-                });
+                renderNewAndRemoveOld(viewToRender, viewToRemove, 'right');
             }
         };
 
