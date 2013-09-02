@@ -91,7 +91,7 @@ var instance = new MySlider().render();
 <p>Cross-link titles can be specified as a property of the backbone view.</p>
 
 <pre><code>var MyBackboneView = Backbone.View.extend({bsliderCrossLinkTitle: 'My View'}),
-    myBackboneViewOne = new MyBackboneView();
+    myBackboneViewOne = new MyBackboneView(); //View should be rendered
 
 var MySlider = Backbone.Slider.extend({
     enableCrossLinks: true,
