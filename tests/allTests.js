@@ -154,6 +154,9 @@ test('clicking on a crosslink navigates to the right view', function () {
         equal(slider.$('#one').length, 0, 'The first view should not be visible');
         equal(slider.$('#two').length, 1, 'The second view should now be visible');
 
+        ok(slider.$('#bsliderCrossLink0').hasClass('unselected'), 'First crosslink should not be selected');
+        ok(slider.$('#bsliderCrossLink1').hasClass('selected'), 'Second crossLink should be selected');
+
         slider.$('#bsliderCrossLink1').click();
 
         equal(slider.$('#one').length, 0, 'The first view should not be visible');
@@ -163,4 +166,7 @@ test('clicking on a crosslink navigates to the right view', function () {
 
         equal(slider.$('#one').length, 1, 'The first view should now be visible');
         equal(slider.$('#two').length, 0, 'The second view should not be visible');
+
+        ok(slider.$('#bsliderCrossLink1').hasClass('unselected'), 'First crosslink should be selected');
+        ok(slider.$('#bsliderCrossLink0').hasClass('selected'), 'Second crossLink should not be selected');
 });

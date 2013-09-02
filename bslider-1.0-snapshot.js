@@ -94,15 +94,16 @@
             __reference.$el.prepend(navContainerLeft.append(__reference.navLeft));
             __reference.$el.append(navContainerRight.append(__reference.navRight));
 
+            if (__reference.enableCrossLinks) {
+                __reference.createCrossLinks();
+            }
+
             if (__reference.initialViewToBeRendered) {
                 __reference.renderViewAt(__reference.initialViewToBeRendered);
             } else {
                 __reference.renderFirstView();
             }
 
-            if (__reference.enableCrossLinks) {
-                __reference.createCrossLinks();
-            }
 
             return __reference;
         };
@@ -111,11 +112,13 @@
             var crossLinkCount = 0;
             __reference.crossLinksContainer = $('<div />').addClass('cross-links');
             __reference.$el.append(__reference.crossLinksContainer),
-            __reference.viewCrossLinkMap = {};
+            __reference.viewCrossLinkMap = {},
+            __reference.crossLinks = [];
             _.each(__reference.views, function (view) {
                 var crossLinkId = 'bsliderCrossLink' + crossLinkCount++,
-                    crossLink = $('<div />').addClass('cross-link').attr('id', crossLinkId);
+                    crossLink = $('<div />').addClass('cross-link').attr('id', crossLinkId).text('View ' + (crossLinkCount)).addClass('unselected');
                 __reference.crossLinksContainer.append(crossLink);
+                __reference.crossLinks.push(crossLink);
                 _.extend(__reference.viewCrossLinkMap, _.object([crossLinkId], [view]));
             });
 
@@ -137,6 +140,8 @@
                     $(viewToRemove.$el).remove();
                     $(viewToRender.$el).show('slide', {direction: 'left'}, 500, function () {
                         __reference.currentView = _.indexOf(__reference.views, viewToRender);
+                        __reference.currentIndex = _.indexOf(__reference.views, __reference.getCurrentView());
+                        __reference.updateCrossLinks();
                     });
                 }
 
@@ -147,8 +152,26 @@
                     $(viewToRemove.$el).remove();
                     $(viewToRender.$el).show('slide', {direction: 'right'}, 500, function () {
                         __reference.currentView = _.indexOf(__reference.views, viewToRender);
+                        __reference.currentIndex = _.indexOf(__reference.views, __reference.getCurrentView());
+                        __reference.updateCrossLinks();
                     });
                 }
+
+            }
+        };
+
+        Slider.prototype.updateCrossLinks = function () {
+            if (__reference.enableCrossLinks) {
+                var currentCrossLink = __reference.crossLinks[_.indexOf(__reference.views, __reference.getCurrentView())];
+                _.each(__reference.crossLinks, function (link) {
+                    if (link === currentCrossLink) {
+                        link.addClass('selected');
+                        link.removeClass('unselected');
+                    } else {
+                        link.addClass('unselected');
+                        link.removeClass('selected');
+                    }
+                });
             }
         };
 
@@ -161,6 +184,7 @@
                 $(viewToRemove.$el).remove();
                 $(viewToRender.$el).show('slide', {direction: 'left'}, 500, function () {
                     __reference.currentView = __reference.currentIndex;
+                    __reference.updateCrossLinks();
                 });
             }
         };
@@ -174,6 +198,7 @@
                 $(viewToRemove.$el).remove();
                 $(viewToRender.$el).show('slide', {direction: 'right'}, 500, function () {
                     __reference.currentView = __reference.currentIndex;
+                    __reference.updateCrossLinks();
                 });
             }
         };
@@ -183,6 +208,7 @@
             if (viewToBeRendered) {
                 __reference.currentView = index;
                 __reference.sliderContainer.append(viewToBeRendered.el);
+                __reference.updateCrossLinks();
             }
         };
 
@@ -213,6 +239,7 @@
 
             __reference.currentView = 0;
             __reference.sliderContainer.append(__reference.getViewAt(0).el);
+            __reference.updateCrossLinks();
         };
 
         return Slider;
